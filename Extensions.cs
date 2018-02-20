@@ -1,13 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
     static class Extensions
     {
+        public static string GetString(this BitArray bits)
+        {
+            StringBuilder b = new StringBuilder();
+            for (int i = 0; i < bits.Length; i++)
+            {
+                b.Append(bits[i] ? 1 : 0);
+            }
+            return b.ToString();
+        }
+
         public static string repl(this string str, char one, char two)
         {
             int first = str.IndexOf(one);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,11 +33,19 @@ namespace ConsoleApp1
         void Run()
         {
             string input;
+            
             while ((input = Console.ReadLine()) != "T")
             {
                 input = input.Replace(" ", "");
-                Begin(input);
+                var amount = 1;
+                System.Diagnostics.Stopwatch v = new System.Diagnostics.Stopwatch();
+                v.Start();
+                for(int i = 0; i < amount; i++)
+                    Begin(input);
+                v.Stop();
+                Console.WriteLine("finished in: " + (v.ElapsedMilliseconds) + "ms, " + (v.Elapsed.TotalSeconds) + " seconds.");
             }
+            
         }
 
         private string Begin(string input)
@@ -50,6 +59,9 @@ namespace ConsoleApp1
                 {
                     if (input[i] == '(')
                     {
+                        //in the future, check commands here...
+                        //ex: if (input.Substring(i-4,4) == "sqrt")
+                            //  do some random type of thing
                         currentThing = input.Substring(i + 1, last - i - 1);
                         Console.WriteLine("Next step");
                         Console.WriteLine(currentThing);
@@ -102,7 +114,7 @@ namespace ConsoleApp1
 
         double operations(string operation, string beforevalue, string aftervalue)
         {
-            if (operation == "^") return (Math.Pow(double.Parse(beforevalue, System.Globalization.NumberStyles.Any), double.Parse(aftervalue, System.Globalization.NumberStyles.Any)));
+            if (operation == "^") return ((double)Math.Pow(double.Parse(beforevalue, System.Globalization.NumberStyles.Any), double.Parse(aftervalue, System.Globalization.NumberStyles.Any)));
             if (operation == "/") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) / double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
             if (operation == "*") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) * double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
             if (operation == "+") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) + double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
