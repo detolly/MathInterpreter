@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
@@ -102,18 +100,13 @@ namespace ConsoleApp1
             return arr[0].text;
         }
 
-        float operations(string operation, string beforevalue, string aftervalue)
+        double operations(string operation, string beforevalue, string aftervalue)
         {
-            if (operation == "/")
-                return (float.Parse(beforevalue) / float.Parse(aftervalue));
-            if (operation == "^")
-                return (float)(Math.Pow(double.Parse(beforevalue), double.Parse(aftervalue)));
-            if (operation == "*")
-                return (float.Parse(beforevalue) * float.Parse(aftervalue));
-            if (operation == "+")
-                return (float.Parse(beforevalue) + float.Parse(aftervalue));
-            if (operation == "-")
-                return (float.Parse(beforevalue) - float.Parse(aftervalue));
+            if (operation == "^") return (Math.Pow(double.Parse(beforevalue, System.Globalization.NumberStyles.Any), double.Parse(aftervalue, System.Globalization.NumberStyles.Any)));
+            if (operation == "/") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) / double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
+            if (operation == "*") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) * double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
+            if (operation == "+") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) + double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
+            if (operation == "-") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) - double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
             return 0;
         }
     }
