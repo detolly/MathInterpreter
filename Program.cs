@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace ConsoleApp1
@@ -55,13 +56,12 @@ namespace ConsoleApp1
             {
                 string currentThing = "";
                 int last = input.IndexOf(')');
+                int g = 0;
                 for (int i = last; i >= 0; i--)
                 {
                     if (input[i] == '(')
                     {
-                        //in the future, check commands here...
-                        //ex: if (input.Substring(i-4,4) == "sqrt")
-                            //  do some random type of thing
+                        g = i;
                         currentThing = input.Substring(i + 1, last - i - 1);
                         Console.WriteLine("Next step");
                         Console.WriteLine(currentThing);
@@ -69,7 +69,27 @@ namespace ConsoleApp1
                     }
                 }
                 string result = calc(currentThing);
-                input = input.ReplaceFirst("(" + currentThing + ")", result);
+                input = input.ReplaceFirst(currentThing, result);
+                int not = 0;
+                //TODO: This code is bad. I should remember the positions of the current operation I'm dealing with
+                //      instead of checking it again. Saves on memory and definitely won't fail!
+                int anotherIndex = input.IndexOf("(", 1);
+                for (int i = anotherIndex; i >= g; i--)
+                {
+                    if (operators.Contains(input[i]))
+                        not = i;
+                }
+                string cmd = null;
+                if (anotherIndex > 0)
+                    cmd = input.Substring(not+1, anotherIndex-not-1);
+                if (cmd?.Length > 0)
+                {
+                    currentThing = cmd + "(" + result + ")";
+                    Console.WriteLine("Command " + currentThing);
+                    result = getCommand(cmd).Invoke(double.Parse(result)).ToString("G99");
+                    input = input.ReplaceFirst($"{currentThing}", result);
+                }
+                input = input.ReplaceFirst($"({currentThing})", result);
                 Console.WriteLine("Now we have:");
                 Console.WriteLine(input);
             }
@@ -114,12 +134,26 @@ namespace ConsoleApp1
 
         double operations(string operation, string beforevalue, string aftervalue)
         {
-            if (operation == "^") return ((double)Math.Pow(double.Parse(beforevalue, System.Globalization.NumberStyles.Any), double.Parse(aftervalue, System.Globalization.NumberStyles.Any)));
-            if (operation == "/") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) / double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
-            if (operation == "*") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) * double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
-            if (operation == "+") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) + double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
-            if (operation == "-") return (double.Parse(beforevalue, System.Globalization.NumberStyles.Any) - double.Parse(aftervalue, System.Globalization.NumberStyles.Any));
+            if (operation == "^") return ((double)Math.Pow(double.Parse(beforevalue, CultureInfo.InvariantCulture), double.Parse(aftervalue, CultureInfo.InvariantCulture)));
+            if (operation == "*") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) * double.Parse(aftervalue, CultureInfo.InvariantCulture));
+            if (operation == "+") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) + double.Parse(aftervalue, CultureInfo.InvariantCulture));
+            if (operation == "/") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) / double.Parse(aftervalue, CultureInfo.InvariantCulture));
+            if (operation == "-") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) - double.Parse(aftervalue, CultureInfo.InvariantCulture));
             return 0;
+        }
+
+        Func<double, double> getCommand(string name)
+        {
+            switch(name)
+            {
+                case "sqrt":
+                    return (d) =>
+                    {
+                        return Math.Sqrt(d);
+                    };
+                default:
+                    return null;
+            }
         }
     }
 }
