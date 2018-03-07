@@ -103,7 +103,7 @@ namespace ConsoleApp1
                     {
                         if (arr[i].text == operators[j].ToString())
                         {
-                            arr[i].text = operations(arr[i].text, arr[i - 1].text, arr[i + 1].text).ToString();
+                            arr[i].text = operations(arr[i].text, arr[i - 1].text, arr[i + 1].text).ToString("G99");
                             arr.Remove(arr[i - 1]);
                             i--;
                             arr.Remove(arr[i+1]);
