@@ -88,13 +88,10 @@ namespace ConsoleApp1
                             break;
                     }
                 }
-                if (cmd != null)
+                if (funcToUse != null)
                 {
                     double newResult = double.Parse(result);
-                    if (funcToUse != null)
-                    {
-                        newResult = funcToUse(double.Parse(result));
-                    }
+                    newResult = funcToUse(double.Parse(result));
                     input = input.ReplaceFirst(cmd + "(" + result + ")", newResult.ToString("G99"));
                 }
                 else
@@ -143,7 +140,7 @@ namespace ConsoleApp1
 
         double operations(string operation, string beforevalue, string aftervalue)
         {
-            if (operation == "^") return ((double)Math.Pow(double.Parse(beforevalue, CultureInfo.InvariantCulture), double.Parse(aftervalue, CultureInfo.InvariantCulture)));
+            if (operation == "^") return (Math.Pow(double.Parse(beforevalue, CultureInfo.InvariantCulture), double.Parse(aftervalue, CultureInfo.InvariantCulture)));
             if (operation == "*") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) * double.Parse(aftervalue, CultureInfo.InvariantCulture));
             if (operation == "+") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) + double.Parse(aftervalue, CultureInfo.InvariantCulture));
             if (operation == "/") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) / double.Parse(aftervalue, CultureInfo.InvariantCulture));
