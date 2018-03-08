@@ -12,3 +12,10 @@ C:\Users\Thomas\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp
 C:\Users\Thomas\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CoreCompileInputs.cache
 C:\Users\Thomas\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.exe
 C:\Users\Thomas\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.pdb
+D:\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp1\ConsoleApp1\bin\Debug\ConsoleApp1.exe.config
+D:\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp1\ConsoleApp1\bin\Debug\ConsoleApp1.exe
+D:\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp1\ConsoleApp1\bin\Debug\ConsoleApp1.pdb
+D:\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.csprojResolveAssemblyReference.cache
+D:\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CoreCompileInputs.cache
+D:\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.exe
+D:\OneDrive - Hordaland fylkeskommune\Random Code Backup\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.pdb

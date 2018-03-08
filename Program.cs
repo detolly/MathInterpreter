@@ -24,7 +24,8 @@ namespace ConsoleApp1
 
     class Program
     {
-        string operators = "^/*+-";
+        const string operators = "^/*+-";
+        const string commandOperators = "^/*+-(";
 
         static void Main(string[] args)
         {
@@ -34,19 +35,19 @@ namespace ConsoleApp1
         void Run()
         {
             string input;
-            
+
             while ((input = Console.ReadLine()) != "T")
             {
                 input = input.Replace(" ", "");
                 var amount = 1;
                 System.Diagnostics.Stopwatch v = new System.Diagnostics.Stopwatch();
                 v.Start();
-                for(int i = 0; i < amount; i++)
+                for (int i = 0; i < amount; i++)
                     Begin(input);
                 v.Stop();
                 Console.WriteLine("finished in: " + (v.ElapsedMilliseconds) + "ms, " + (v.Elapsed.TotalSeconds) + " seconds.");
             }
-            
+
         }
 
         private string Begin(string input)
@@ -69,27 +70,35 @@ namespace ConsoleApp1
                     }
                 }
                 string result = calc(currentThing);
+                //input = input.ReplaceFirst("(" + currentThing + ")", result);
                 input = input.ReplaceFirst(currentThing, result);
-                int not = 0;
-                //TODO: This code is bad. I should remember the positions of the current operation I'm dealing with
-                //      instead of checking it again. Saves on memory and definitely won't fail!
-                int anotherIndex = input.IndexOf("(", 1);
-                for (int i = anotherIndex; i >= g; i--)
-                {
-                    if (operators.Contains(input[i]))
-                        not = i;
-                }
+                //we have to check if the brackets are prefixed with a command
                 string cmd = null;
-                if (anotherIndex > 0)
-                    cmd = input.Substring(not+1, anotherIndex-not-1);
-                if (cmd?.Length > 0)
+                Func<double, double> funcToUse = null;
+                int anotherIndex = input.IndexOf("(" + currentThing + ")");
+                for (int i = anotherIndex; i >= 0; i--)
                 {
-                    currentThing = cmd + "(" + result + ")";
-                    Console.WriteLine("Command " + currentThing);
-                    result = getCommand(cmd).Invoke(double.Parse(result)).ToString("G99");
-                    input = input.ReplaceFirst($"{currentThing}", result);
+                    if (commandOperators.Contains(input[i]) || i == 0)
+                    {
+                        int h = anotherIndex - i - 1;
+                        if (h > 0)
+                            cmd = input.Substring(i + 1, h);
+                        funcToUse = getCommand(cmd);
+                        if (funcToUse != null)
+                            break;
+                    }
                 }
-                input = input.ReplaceFirst($"({currentThing})", result);
+                if (cmd != null)
+                {
+                    double newResult = double.Parse(result);
+                    if (funcToUse != null)
+                    {
+                        newResult = funcToUse(double.Parse(result));
+                    }
+                    input = input.ReplaceFirst(cmd + "(" + result + ")", newResult.ToString("G99"));
+                }
+                else
+                    input = input.ReplaceFirst("(" + currentThing + ")", result);
                 Console.WriteLine("Now we have:");
                 Console.WriteLine(input);
             }
@@ -119,14 +128,14 @@ namespace ConsoleApp1
             }
             while (arr.Count > 1)
                 for (int j = 0; j < operators.Length; j++)
-                    for (int i = 0; i < arr.Count-1; i++)
+                    for (int i = 0; i < arr.Count - 1; i++)
                     {
                         if (arr[i].text == operators[j].ToString())
                         {
                             arr[i].text = operations(arr[i].text, arr[i - 1].text, arr[i + 1].text).ToString("G99");
                             arr.Remove(arr[i - 1]);
                             i--;
-                            arr.Remove(arr[i+1]);
+                            arr.Remove(arr[i + 1]);
                         }
                     }
             return arr[0].text;
@@ -144,12 +153,17 @@ namespace ConsoleApp1
 
         Func<double, double> getCommand(string name)
         {
-            switch(name)
+            switch (name)
             {
                 case "sqrt":
                     return (d) =>
                     {
                         return Math.Sqrt(d);
+                    };
+                case "sigmoid":
+                    return (d) =>
+                    {
+                        return 1 / (1 + Math.Exp(-d));
                     };
                 default:
                     return null;
