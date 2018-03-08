@@ -24,8 +24,7 @@ namespace ConsoleApp1
 
     class Program
     {
-        const string operators = "^/*+-";
-        const string commandOperators = "^/*+-(";
+        const string operators = "^/%*+-";
 
         static void Main(string[] args)
         {
@@ -78,7 +77,7 @@ namespace ConsoleApp1
                 int anotherIndex = input.IndexOf("(" + currentThing + ")");
                 for (int i = anotherIndex; i >= 0; i--)
                 {
-                    if (commandOperators.Contains(input[i]) || i == 0)
+                    if (operators.Contains(input[i]) || input[i] == '(' || i == 0)
                     {
                         int h = anotherIndex - i - 1;
                         if (h > 0)
@@ -142,6 +141,7 @@ namespace ConsoleApp1
         {
             if (operation == "^") return (Math.Pow(double.Parse(beforevalue, CultureInfo.InvariantCulture), double.Parse(aftervalue, CultureInfo.InvariantCulture)));
             if (operation == "*") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) * double.Parse(aftervalue, CultureInfo.InvariantCulture));
+            if (operation == "%") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) % double.Parse(aftervalue, CultureInfo.InvariantCulture));
             if (operation == "+") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) + double.Parse(aftervalue, CultureInfo.InvariantCulture));
             if (operation == "/") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) / double.Parse(aftervalue, CultureInfo.InvariantCulture));
             if (operation == "-") return (double.Parse(beforevalue, CultureInfo.InvariantCulture) - double.Parse(aftervalue, CultureInfo.InvariantCulture));
@@ -161,6 +161,61 @@ namespace ConsoleApp1
                     return (d) =>
                     {
                         return 1 / (1 + Math.Exp(-d));
+                    };
+                case "sin":
+                    return (d) =>
+                    {
+                        return Math.Sin(d);
+                    };
+                case "cos":
+                    return (d) =>
+                    {
+                        return Math.Cos(d);
+                    };
+                case "tan":
+                    return (d) =>
+                    {
+                        return Math.Tan(d);
+                    };
+                case "arctan":
+                    return (d) =>
+                    {
+                        return Math.Atan(d);
+                    };
+                case "asin":
+                    return (d) =>
+                    {
+                        return Math.Asin(d);
+                    };
+                case "acos":
+                    return (d) =>
+                    {
+                        return Math.Acos(d);
+                    };
+                case "ln":
+                    return (d) =>
+                    {
+                        return Math.Log(d);
+                    };
+                case "log":
+                    return (d) =>
+                    {
+                        return Math.Log10(d);
+                    };
+                case "floor":
+                    return (d) =>
+                    {
+                        return Math.Floor(d);
+                    };
+                case "round":
+                    return (d) =>
+                    {
+                        return Math.Round(d);
+                    };
+                case "abs":
+                    return (d) =>
+                    {
+                        return Math.Abs(d);
                     };
                 default:
                     return null;
