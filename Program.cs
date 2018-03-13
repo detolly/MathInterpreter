@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace ConsoleApp1
 {
@@ -41,16 +42,36 @@ namespace ConsoleApp1
                 System.Diagnostics.Stopwatch v = new System.Diagnostics.Stopwatch();
                 v.Start();
                 for (int i = 0; i < amount; i++)
-                    Begin(input);
+                {
+                    try
+                    {
+                        Begin(input);
+                    }
+                    catch (Exception e)
+                    {
+                        if (e is FormatException f)
+                        {
+                            Console.WriteLine("Could not interpret input..");
+                        } else if (e is ParenthesesException d)
+                        {
+                            Console.WriteLine("Parentheses error at " + d.Message);
+                        }
+                        else
+                        {
+                            throw e;
+                        }
+                    }
+                }
                 v.Stop();
                 Console.WriteLine("finished in: " + (v.ElapsedMilliseconds) + "ms, " + (v.Elapsed.TotalSeconds) + " seconds.");
             }
 
         }
 
-        private string Begin(string input)
+        private string Begin(string inputA)
         {
-            input = "(" + input + ")";
+            string input = "(" + inputA + ")";
+            string lastS = "";
             while (input.Contains("("))
             {
                 string currentThing = "";
@@ -96,6 +117,14 @@ namespace ConsoleApp1
                     input = input.ReplaceFirst("(" + currentThing + ")", result);
                 Console.WriteLine("Now we have:");
                 Console.WriteLine(input);
+                if (lastS == input) {
+                    string spacc = "";
+                    int spaces = Math.Max(inputA.IndexOf("("), 0);
+                    for (int i = 0; i < spaces; i++)
+                        spacc += " ";
+                    throw new ParenthesesException(Environment.NewLine + inputA.Substring(Math.Max(inputA.IndexOf("(") - 3, 0), Math.Min(inputA.Length, 5)) + Environment.NewLine + spacc + "^");
+                }
+                lastS = input;
             }
             Console.WriteLine(input);
             return input;
@@ -271,5 +300,24 @@ namespace ConsoleApp1
     public static class FormatStrings
     {
         public const string DoubleFixedPoint = "0.###################################################################################################################################################################################################################################################################################################################################################";
+    }
+
+    class ParenthesesException : Exception
+    {
+        public ParenthesesException()
+        {
+        }
+
+        public ParenthesesException(string message) : base(message)
+        {
+        }
+
+        public ParenthesesException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected ParenthesesException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }
