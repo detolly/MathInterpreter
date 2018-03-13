@@ -111,7 +111,7 @@ namespace ConsoleApp1
                 {
                     double newResult = double.Parse(result);
                     newResult = funcToUse(double.Parse(result));
-                    input = input.ReplaceFirst(cmd + "(" + result + ")", newResult.ToString(FormatStrings.DoubleFixedPoint));
+                    input = input.ReplaceFirst(cmd + "(" + result + ")", newResult.ToString(FormatStrings.DoubleFixedPoint, CultureInfo.GetCultureInfoByIetfLanguageTag("US")));
                 }
                 else
                     input = input.ReplaceFirst("(" + currentThing + ")", result);
@@ -156,7 +156,7 @@ namespace ConsoleApp1
                     {
                         if (arr[i].text == operators[j].ToString())
                         {
-                            arr[i].text = operations(arr[i].text, arr[i - 1].text, arr[i + 1].text).ToString(FormatStrings.DoubleFixedPoint);
+                            arr[i].text = operations(arr[i].text, arr[i - 1].text, arr[i + 1].text).ToString(FormatStrings.DoubleFixedPoint, CultureInfo.GetCultureInfoByIetfLanguageTag("US"));
                             arr.Remove(arr[i - 1]);
                             i--;
                             arr.Remove(arr[i + 1]);
