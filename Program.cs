@@ -8,7 +8,6 @@ namespace ConsoleApp1
 {
     class Ledd
     {
-        int random = new Random().Next(15);
         public string text = "";
 
         public Ledd(string text)
@@ -91,7 +90,7 @@ namespace ConsoleApp1
                 {
                     double newResult = double.Parse(result);
                     newResult = funcToUse(double.Parse(result));
-                    input = input.ReplaceFirst(cmd + "(" + result + ")", newResult.ToString("G99"));
+                    input = input.ReplaceFirst(cmd + "(" + result + ")", newResult.ToString(FormatStrings.DoubleFixedPoint));
                 }
                 else
                     input = input.ReplaceFirst("(" + currentThing + ")", result);
@@ -128,7 +127,7 @@ namespace ConsoleApp1
                     {
                         if (arr[i].text == operators[j].ToString())
                         {
-                            arr[i].text = operations(arr[i].text, arr[i - 1].text, arr[i + 1].text).ToString("G99");
+                            arr[i].text = operations(arr[i].text, arr[i - 1].text, arr[i + 1].text).ToString(FormatStrings.DoubleFixedPoint);
                             arr.Remove(arr[i - 1]);
                             i--;
                             arr.Remove(arr[i + 1]);
@@ -167,30 +166,60 @@ namespace ConsoleApp1
                     {
                         return Math.Sin(d);
                     };
+                case "Sin":
+                    return (d) =>
+                    {
+                        return Math.Sin(d * (Math.PI / 180d));
+                    };
                 case "cos":
                     return (d) =>
                     {
                         return Math.Cos(d);
+                    };
+                case "Cos":
+                    return (d) =>
+                    {
+                        return Math.Cos(d*(Math.PI/180d));
                     };
                 case "tan":
                     return (d) =>
                     {
                         return Math.Tan(d);
                     };
-                case "arctan":
+                case "Tan":
+                    return (d) =>
+                    {
+                        return Math.Tan(d * (Math.PI / 180d));
+                    };
+                case "atan":
                     return (d) =>
                     {
                         return Math.Atan(d);
+                    };
+                case "Atan":
+                    return (d) =>
+                    {
+                        return Math.Atan(d * (Math.PI/180d));
                     };
                 case "asin":
                     return (d) =>
                     {
                         return Math.Asin(d);
                     };
+                case "Asin":
+                    return (d) =>
+                    {
+                        return Math.Asin(d * (Math.PI / 180d));
+                    };
                 case "acos":
                     return (d) =>
                     {
                         return Math.Acos(d);
+                    };
+                case "Acos":
+                    return (d) =>
+                    {
+                        return Math.Acos(d * (Math.PI / 180d));
                     };
                 case "ln":
                     return (d) =>
@@ -217,9 +246,30 @@ namespace ConsoleApp1
                     {
                         return Math.Abs(d);
                     };
+                case "fact":
+                    return (d) =>
+                    {
+                        return Factorial(d);
+                    };
                 default:
                     return null;
             }
         }
+
+        double Factorial(double d)
+        {
+            switch (d)
+            {
+                case 1:
+                    return 1;
+                default:
+                    return d * Factorial(d - 1);
+            }
+        }
+    }
+
+    public static class FormatStrings
+    {
+        public const string DoubleFixedPoint = "0.###################################################################################################################################################################################################################################################################################################################################################";
     }
 }
